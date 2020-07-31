@@ -1,0 +1,221 @@
+﻿@model NewEmployeeViewModel
+
+@{
+    ViewBag.PageTitle = $"New Employee";
+}
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header border-0">
+                <div class="row align-items-center">
+                    <div class="col-4">
+                        <h3 class="h2 mb-0">New Employee</h3>
+                    </div>
+                    <div class="col-8 text-right">
+                        <a asp-action="maintainemployees"
+                           class="btn btn-md btn-light text-md">
+                            <i class="fa fa-times"></i>
+                        </a>
+                        <button type="submit" form="DataForm" class="btn btn-md btn-primary">Save Employee</button>
+                    </div>
+                </div>
+            </div>
+            <form class="container-fluid" method="post" id="DataForm">
+                <p class="h2">Personal Details</p>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group row">
+                            <label asp-for="@Model.FirstName" class="col-sm-4 col-form-label"></label>
+                            <div class="col-sm-8">
+                                <input asp-for="@Model.FirstName" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group row">
+                            <label asp-for="@Model.LastName" class="col-sm-4 col-form-label"></label>
+                            <div class="col-sm-8">
+                                <input asp-for="@Model.LastName" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group row">
+                            <label asp-for="@Model.Email" class="col-sm-4 col-form-label"></label>
+                            <div class="col-sm-8">
+                                <input asp-for="@Model.Email" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group row">
+                            <label asp-for="@Model.Phone" class="col-sm-4 col-form-label"></label>
+                            <div class="col-sm-8">
+                                <input asp-for="@Model.Phone" class="form-control">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 col-md-6">
+                        <div class="form-group row">
+                            <label asp-for="@Model.Role" class="col-sm-4 col-form-label"></label>
+                            <div class="col-sm-8">
+                                <select asp-for="@Model.Role" class="form-control">
+                                    <option style="display: none;" selected>Choose Role</option>
+
+                                    @foreach (var role in Model.Roles)
+                                    {
+                                        <option value="@role">@role</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="@Model.Address" class="col-sm-2 col-form-label"></label>
+                    <div class="col-sm-10">
+                        <input asp-for="@Model.Address" class="form-control">
+                    </div>
+                </div>
+                <hr />
+                <p class="h2">Credentials</p>
+                <div class="form-group row">
+                    <label asp-for="@Model.UserName" class="col-sm-2 col-form-label"></label>
+                    <div class="col-sm-10">
+                        <input asp-for="@Model.UserName" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="@Model.Password" class="col-sm-2 col-form-label"></label>
+                    <div class="col-sm-10">
+                        <input asp-for="@Model.Password" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="@Model.ConfirmPassword" class="col-sm-2 col-form-label"></label>
+                    <div class="col-sm-10">
+                        <input asp-for="@Model.ConfirmPassword" class="form-control">
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div style="position: fixed; top: 2rem; right: .5rem;">
+
+        <!-- Then put toasts within -->
+        <div class="toast" role="alert" data-delay="5000" data-autohide="true" aria-live="assertive" aria-atomic="true">
+            <div class="toast-header bg-danger text-white">
+                <strong class="mr-auto">Validation Error</strong>
+                <small class="text-muted text-white">just now</small>
+                <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="toast-body">
+                <div asp-validation-summary="All"></div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Styles {
+    <style>
+        /* The switch - the box around the slider */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 80px;
+            height: 36px;
+        }
+
+            /* Hide default HTML checkbox */
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 26px;
+                width: 26px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                -webkit-transition: .4s;
+                transition: .4s;
+            }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(46px);
+            -ms-transform: translateX(46px);
+            transform: translateX(46px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 36px;
+        }
+
+            .slider.round:before {
+                border-radius: 50%;
+            }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        $('.toast').toast('show');
+    </script>
+}
+
+@section Breadcrumb {
+    <nav class="d-none d-md-inline-block ml-md-4">
+        <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+            <li class="breadcrumb-item">
+                <i class="fa fa-home text-white"></i>
+            </li>
+            <li class="breadcrumb-item text-white">
+                Maintenance
+            </li>
+            <li class="breadcrumb-item text-white">
+                <a asp-action="maintainemployees">
+                    Manage Employee
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                New Employee
+            </li>
+        </ol>
+    </nav>
+}

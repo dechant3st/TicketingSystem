@@ -1,0 +1,66 @@
+﻿@model IEnumerable<AppClaim>
+
+@{
+    ViewBag.PageTitle = "Manage Access";
+}
+
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header border-0">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="mb-0">Access List</h3>
+                    </div>
+                    <div class="col text-right">
+                        <!--<button class="btn btn-sm btn-primary">New Claim</button>-->
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-items-center table-flush">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var claim in Model)
+                        {
+                            <tr>
+                                <th scope="row">@claim.Id</th>
+                                <td>@claim.ClaimType</td>
+                                <td>@claim.ClaimValue</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+}
+
+@section Scripts {
+}
+
+@section Breadcrumb {
+    <nav class="d-none d-md-inline-block ml-md-4">
+        <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+            <li class="breadcrumb-item">
+                <i class="fa fa-home text-white"></i>
+            </li>
+            <li class="breadcrumb-item text-white">
+                Maintenance
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Manage Access
+            </li>
+        </ol>
+    </nav>
+}

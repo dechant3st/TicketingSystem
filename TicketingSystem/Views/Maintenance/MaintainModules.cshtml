@@ -1,0 +1,107 @@
+﻿@model MaintainModuleViewModel
+
+@{
+    ViewBag.PageTitle = "Manage Module";
+
+    List<AppClaim> claims = Model.Claims.ToList();
+}
+
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header border-0">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="mb-0">Module List</h3>
+                    </div>
+                    <div class="col text-right">
+                        <a asp-action="newmodule"
+                           class="btn btn-sm btn-primary">New Module</a>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-items-center table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Path</th>
+
+                            @foreach (var claim in claims)
+                            {
+                                <th scope="col">@claim.ClaimType</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var module in Model.Modules)
+                        {
+                            <!--<tr onclick="document.getElementById('btn-@module.Id').click()">-->
+                            <tr>
+                                <th scope="row">@module.Id</th>
+                                <td>
+                                    <a asp-action="editmodule"
+                                       asp-route-id="@module.Id"
+                                       class="btn btn-link btn-sm mr-1"
+                                       id="btn-@module.Id">
+                                        <i class="fa fa-cog"></i>
+                                    </a>
+                                    @module.Name
+                                </td>
+                                <td>@module.Path</td>
+
+                                @foreach (var claim in claims)
+                                {
+                                    bool chk = false;
+
+                                    if(Model.ModuleClaims != null) {
+
+                                        @if (Model.ModuleClaims.Where(x => x.AppClaimId == claim.Id && x.ModuleId == module.Id).Any())
+                                        {
+                                            chk = true;
+                                        }
+                                    }
+
+                                    <td>
+                                        @if (chk)
+                                        {
+                                            <span class="badge bg-success text-white">Authorized</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger text-white">Unauthorized</span>
+                                        }
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+}
+
+@section Scripts {
+}
+
+@section Breadcrumb {
+    <nav class="d-none d-md-inline-block ml-md-4">
+        <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+            <li class="breadcrumb-item">
+                <i class="fa fa-home text-white"></i>
+            </li>
+            <li class="breadcrumb-item text-white">
+                Maintenance
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Manage Module
+            </li>
+        </ol>
+    </nav>
+}

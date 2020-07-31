@@ -1,0 +1,108 @@
+﻿@model MaintainRoleViewModel
+
+@{
+    ViewBag.PageTitle = "Manage Role";
+    var count = 0;
+}
+
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header border-0">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="mb-0">Role List</h3>
+                    </div>
+                    <div class="col text-right">
+                        <a asp-action="newmodule"
+                           class="btn btn-sm btn-primary">New Role</a>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-items-center table-hover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Name</th>
+
+                            @foreach (var module in Model.Modules)
+                            {
+                                <th scope="col">@module.Name</th>
+                            }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var role in Model.Roles)
+                        {
+                            count++;
+                            <!--<tr onclick="document.getElementById('btn-@role.Id').click()">-->
+                            <tr>
+                                <th scope="row">@count</th>
+                                <td>
+                                    <a asp-action="editrole"
+                                       asp-route-id="@role.Id"
+                                       class="btn btn-link btn-sm mr-1"
+                                       id="btn-@role.Id">
+                                        <i class="fa fa-cog"></i>
+                                    </a>
+                                    @role.Name
+                                </td>
+
+                                @foreach (var module in Model.Modules)
+                                {
+                                    bool chk = false;
+
+                                    if (Model.RoleModules != null)
+                                    {
+
+                                        @if (Model.RoleModules
+                                            .Where(x => x.RoleId == role.Id && x.ModuleId == module.Id).Any() ||
+                                            role.isSuperAdmin)
+                                        {
+                                            chk = true;
+                                        }
+                                    }
+
+                                    <td>
+                                        @if (chk)
+                                        {
+                                            <span class="badge bg-success text-white">Authorized</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-danger text-white">Unauthorized</span>
+                                        }
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+}
+
+@section Scripts {
+}
+
+@section Breadcrumb {
+    <nav class="d-none d-md-inline-block ml-md-4">
+        <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+            <li class="breadcrumb-item">
+                <i class="fa fa-home text-white"></i>
+            </li>
+            <li class="breadcrumb-item text-white">
+                Maintenance
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Manage Role
+            </li>
+        </ol>
+    </nav>
+}

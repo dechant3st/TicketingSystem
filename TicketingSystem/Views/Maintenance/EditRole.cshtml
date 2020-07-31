@@ -1,0 +1,184 @@
+﻿@model EditRoleViewModel
+
+@{
+    ViewBag.PageTitle = $"Edit Role";
+}
+
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="card">
+            <div class="card-header border-0">
+                <div class="row align-items-center">
+                    <div class="col-4">
+                        <h3 class="mb-0">Edit Role - @Model.Name</h3>
+                    </div>
+                    <div class="col-8 text-right">
+                        <a asp-action="maintainroles"
+                           class="btn btn-md btn-light text-md">
+                            <i class="fa fa-times"></i>
+                        </a>
+                        <button type="submit" form="DataForm" class="btn btn-md btn-primary">Update Role</button>
+                    </div>
+                </div>
+            </div>
+            <form class="container-fluid" method="post" id="DataForm">
+                <input type="hidden" asp-for="@Model.Id" />
+                <div class="form-group row">
+                    <label asp-for="@Model.Name" class="col-sm-2 col-form-label"></label>
+                    <div class="col-sm-10">
+                        <input asp-for="@Model.Name" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label asp-for="@Model.IsSuperAdmin" class="col-sm-2 col-form-label">Super Admin</label>
+                    <div class="col-sm-10">
+                        <div class="col-sm-6 switch-container">
+                            <label class="switch">
+                                <input asp-for="@Model.IsSuperAdmin" type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <h4 class="h4">Module Access</h4>
+                    </div>
+                </div>
+
+                @{
+                    var col = 0;
+                    var startRow = "<div class='row'>";
+                    var endRow = "</div>";
+                }
+
+                @for (int i = 0; i < Model.Modules.Count; i++)
+                {
+                    if (col == 0)@Html.Raw(startRow);
+
+                    <div class="col-sm-6">
+                        <input type="hidden" asp-for="@Model.Modules[i].Id" />
+                        <div class="form-group row">
+                            <label asp-for="@Model.Modules[i].Name" class="col-sm-6 col-form-label">@Model.Modules[i].Name</label>
+                            <div class="col-sm-6 switch-container">
+                                <label class="switch">
+                                    @if (Model.IsSuperAdmin)
+                                    {
+                                        <input asp-for="@Model.Modules[i].Status" type="checkbox" disabled>
+                                    }
+                                    else
+                                    {
+                                        <input asp-for="@Model.Modules[i].Status" type="checkbox">
+                                    }
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    col++;
+
+                    if (col == 2)
+                    {
+                        col = 0;
+                        @Html.Raw(endRow);
+                    }
+
+                }
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        /* The switch - the box around the slider */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 80px;
+            height: 36px;
+        }
+
+            /* Hide default HTML checkbox */
+            .switch input {
+                opacity: 0;
+                width: 0;
+                height: 0;
+            }
+
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+        }
+
+            .slider:before {
+                position: absolute;
+                content: "";
+                height: 26px;
+                width: 26px;
+                left: 4px;
+                bottom: 4px;
+                background-color: white;
+                -webkit-transition: .4s;
+                transition: .4s;
+            }
+
+        input:checked + .slider {
+            background-color: #2196F3;
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(46px);
+            -ms-transform: translateX(46px);
+            transform: translateX(46px);
+        }
+
+        /* Rounded sliders */
+        .slider.round {
+            border-radius: 36px;
+        }
+
+            .slider.round:before {
+                border-radius: 50%;
+            }
+    </style>
+}
+
+@section Scripts {
+}
+
+@section Breadcrumb {
+    <nav class="d-none d-md-inline-block ml-md-4">
+        <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+            <li class="breadcrumb-item">
+                <i class="fa fa-home text-white"></i>
+            </li>
+            <li class="breadcrumb-item text-white">
+                Maintenance
+            </li>
+            <li class="breadcrumb-item text-white">
+                <a asp-action="maintainmodules">
+                    Manage Role
+                </a>
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                @Model.Name
+            </li>
+        </ol>
+    </nav>
+}

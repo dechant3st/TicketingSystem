@@ -1,0 +1,125 @@
+﻿@model List<MaintainTeamsViewModel>
+
+@{
+    ViewBag.PageTitle = "Manage Team";
+
+    var col = 0;
+    string startRow = "<div class='row'>", endRow = "</div>";
+}
+
+@foreach (var team in Model)
+{
+
+    if (col == 0)@Html.Raw(startRow);
+
+    <div class="col-xl-6">
+        <div class="card text-white bg-secondary">
+            <div class="card-header rounded-bottom">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h3 class="mb-0">@team.Name Team</h3>
+                    </div>
+                    <div class="col text-right">
+                        <a asp-action="assignteammember"
+                           asp-route-id="@team.Id"
+                           class="btn btn-sm btn-primary">Assign Member</a>
+                        <a id="@(string.Concat("cbtn", team.Id))" class="btn btn-sm btn-link text-gray" data-toggle="collapse"
+                           href="@(string.Concat("#collapse-panel-", team.Id))" role="button"
+                           aria-expanded="false" aria-controls="@(string.Concat("collapse-panel-", team.Id))">
+                            <i class="fa fa-lg fa-caret-left"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div id="@(string.Concat("collapse-panel-", team.Id))" data-btn="@(string.Concat("cbtn", team.Id))" class="collapse">
+                <div class="card-body pt-1 pb-1">
+                    @if (team.Users.Count > 0)
+                    {
+                        <ul id="team-list-@team.Id" class="list-group list-group-flush">
+                            @foreach (var user in team.Users)
+                            {
+                                <li class="list-group-item">
+                                    <div class="media">
+                                        <span class="avatar avatar-sm rounded-circle align-self-center mr-4 ml-3">
+                                            <img alt="Image placeholder"
+                                                 src="https://demos.creative-tim.com/argon-dashboard-pro/assets/img/theme/team-4.jpg">
+                                        </span>
+                                        <div class="media-body">
+                                            <h5 class="mt-0">@user.FirstName @user.LastName</h5>
+                                            <p class="mb-0 mt-0 text-muted"><span class="fa fa-envelope text-warning"></span> @user.Email</p>
+                                            <p class="mb-0 mt-0 text-muted"><span class="fa fa-phone text-primary"></span> @user.Phone</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="h5">No Member</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (col == 2)
+    {
+        @Html.Raw(endRow)
+        col = 0;
+    }
+
+    col++;
+}
+
+
+
+@section Styles {
+    <link href="~/css/jquery.paginate.css" rel="stylesheet" />
+}
+
+@section Scripts {
+    <script src="~/js/jquery.paginate.js"></script>
+    <script>
+        $('[id^="collapse-panel-"]').on('shown.bs.collapse', function () {
+            $('#' + $(this).data('btn')).html('<i class="fa fa-lg fa-caret-down"></i>');
+        });
+
+        $('[id^="collapse-panel-"]').on('hidden.bs.collapse', function () {
+            $('#' + $(this).data('btn')).html('<i class="fa fa-lg fa-caret-left"></i>');
+        });
+
+        $('[id^="team-list-"').paginate({
+            perPage: 5
+        });
+
+        $(document).ready(function () {
+            var paginate = $('.paginate-pagination');
+
+            $.each(paginate, function () {
+                var prev = this.querySelector('.page-prev');
+                var next = this.querySelector('.page-next');
+
+                if (prev.classList.contains('deactive') && next.classList.contains('deactive')) {
+                    $(this).attr('style', 'display: none;');
+                }
+            });
+        });
+    </script>
+}
+
+@section Breadcrumb {
+    <nav class="d-none d-md-inline-block ml-md-4">
+        <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+            <li class="breadcrumb-item">
+                <i class="fa fa-home text-white"></i>
+            </li>
+            <li class="breadcrumb-item text-white">
+                Maintenance
+            </li>
+            <li class="breadcrumb-item active" aria-current="page">
+                Manage Team
+            </li>
+        </ol>
+    </nav>
+}
